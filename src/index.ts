@@ -1,6 +1,9 @@
 import app from './server'
+
+
+
 app.listen(3001, ()=>{
-    console.log("hello  on the http://localhost:3001git ");
+    console.log("hello on the http://localhost:3001");
 })
 
 
