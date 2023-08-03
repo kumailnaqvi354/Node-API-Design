@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { body, oneOf } from "express-validator";
 import { handlerInputError } from "./modules/middleware";
+import { createProduct, deleteProductById, getProductById, getProducts } from "./handlers/product";
 
 const router = Router();
 
@@ -8,10 +9,8 @@ const router = Router();
  * Product
  */
 
-router.get("/product", (req, res) => {
-  res.json({ message: "Hello" });
-});
-router.get("/product/:id", () => {});
+router.get("/product", getProducts);
+router.get("/product/:id", getProductById);
 
 router.put(
   "/product/:id",
@@ -23,9 +22,9 @@ router.post(
   "/product/",
   body("name").isString(),
   handlerInputError,
-  (req, res) => {}
+  createProduct
 );
-router.delete("/product/:id", () => {});
+router.delete("/product/:id", deleteProductById);
 
 /**
  * Update
@@ -37,8 +36,8 @@ router.put(
   "/update/:id",
   body("title").optional(),
   body("body").optional(),
-                //Both ways can be used to validate the inputs specific to schema
-  // oneOf([body("IN_PROGRESS"), body("SHIPPED"), body("DEPRECATED")]), 
+  //Both ways can be used to validate the inputs specific to schema
+  // oneOf([body("IN_PROGRESS"), body("SHIPPED"), body("DEPRECATED")]),
   body("status").isIn(["IN_PROGRESS", "SHIPPED", "DEPRECATED"]),
   body("version").optional(),
   () => {}

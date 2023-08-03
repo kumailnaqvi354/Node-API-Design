@@ -21,7 +21,7 @@ export const getProductById = async (req, res) => {
   const product = await prisma.product.findFirst({
     where: {
       id,
-      belongsTo: req.user.id,
+      belongsToId: req.user.id,
     },
   });
 
@@ -41,8 +41,10 @@ export const createProduct = async (req, res) => {
 export const updateProduct = async (req, res) => {
   const updated = await prisma.product.update({
     where: {
-      id: req.params.id,
-      id_belongsToId: req.user.id,
+      id_belongsToId: {
+        id: req.params.id,
+        belongsToId: req.user.id,
+      },
     },
     data: {
       name: req.body.name,
@@ -55,8 +57,10 @@ export const updateProduct = async (req, res) => {
 export const deleteProductById = async (req, res) => {
   const deleted = await prisma.product.delete({
     where: {
-      id: req.params.id,
-      id_belongsToId: req.user.id,
+      id_belongsToId: {
+        id: req.params.id,
+        belongsToId: req.user.id,
+      },
     },
   });
 
