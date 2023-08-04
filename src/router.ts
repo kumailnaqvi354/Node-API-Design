@@ -2,6 +2,7 @@ import { Router } from "express";
 import { body, oneOf } from "express-validator";
 import { handlerInputError } from "./modules/middleware";
 import { createProduct, deleteProductById, getProductById, getProducts } from "./handlers/product";
+import { createUpdate, deleteUpdate, getOneUpdate, getUpdates, updateUpdate } from "./handlers/update";
 
 const router = Router();
 
@@ -30,25 +31,24 @@ router.delete("/product/:id", deleteProductById);
  * Update
  */
 
-router.get("/update", () => {});
-router.get("/update/:id", () => {});
+router.get("/update", getUpdates);
+router.get("/update/:id", getOneUpdate);
 router.put(
   "/update/:id",
   body("title").optional(),
   body("body").optional(),
-  //Both ways can be used to validate the inputs specific to schema
-  // oneOf([body("IN_PROGRESS"), body("SHIPPED"), body("DEPRECATED")]),
   body("status").isIn(["IN_PROGRESS", "SHIPPED", "DEPRECATED"]),
   body("version").optional(),
-  () => {}
+  updateUpdate
 );
 router.post(
-  "/update/",
+  "/update",
   body("title").exists().isString(),
-  body("body").optional(),
-  () => {}
+  body("body").exists().isString(),
+  body("productId").exists().isString(),
+  createUpdate
 );
-router.delete("/update/:id", () => {});
+router.delete("/update/:id", deleteUpdate);
 
 /**
  * Update Points
