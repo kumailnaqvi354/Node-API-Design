@@ -15,14 +15,20 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/", (req, res) => {
-  console.log("hello from express");
-  res.status(200);
-  res.json({ message: "hello" });
+app.get("/", (req, res, next) => {
+  setTimeout(() => {
+    next( new Error(' hello'));
+  }, 1);
 });
 
 app.use("/api", protect, router);
 app.post("/user", createNewUser);
 app.post("/signin", signIn);
+
+app.use((err, req, res, next)=>{
+  console.log("Err", err);
+  res.json({message:'oops there was an error'});
+  
+})
 
 export default app;
